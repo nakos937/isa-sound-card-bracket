@@ -98,7 +98,7 @@ module part3d() {
 }
 module part_plate_only() { linear_extrude(t) difference(){ intersection(){ outline(); translate([setb,-20]) square([200,60]); } cutouts(); } bend3d(); }
 if (MODE=="outline") projection(cut=false) part_plate_only();
-else if (MODE=="markout") { projection(cut=false) part_plate_only(); marks(); }
+else if (MODE=="markout") { outl(0.2) projection(cut=false) part_plate_only(); marks(); }   // outline drawn as 0.2 mm line so the marks stay separate
 else if (MODE=="cut") cutflat();
 else if (MODE=="mark") marks();
 else { part3d(); color("red") translate([0,0,t]) linear_extrude(0.05) marks(); }
