@@ -58,7 +58,7 @@ module flange2d() {           // unrolled: plate tangent at x=setb, bend zone le
 }
 module bend_line() { translate([setb-BA/2,y0]) square([0.05,fl_w]); }   // reference only
 // ---- engraving (outside face; flange-left view as in scan; text rotated 180 as on original) ----
-lw=0.2; ty=Wd-3.0; th=2.0;
+lw=0.2; ty=Wd-3.0; th=2.4;
 module ring(r,a0,a1) { intersection(){ difference(){circle(r=r+lw/2);circle(r=r-lw/2);} polygon(concat([[0,0]],[for(a=[a0:6:a1])[6*cos(a),6*sin(a)]])); } }
 module bar(x0,y0,x1,y1) { hull(){ translate([x0,y0]) circle(d=lw); translate([x1,y1]) circle(d=lw);} }
 module sig(dir) { // photo 9/10: 3 concentric rings split into dome+bowl with side gaps, arrow shaft through centre; dir=+1 head up
@@ -83,7 +83,7 @@ module joy() { // scan: lever capsule runs into a diamond pointing toward the ta
   translate([-3.15,0.15]) outl() cap(1.8,1.5);
 }
 module marks() {
-  for (i=[0:2]) translate([jx[i],ty]) rotate(180) text(["MIC","IN","OUT"][i],size=th,halign="center",valign="center",font="Liberation Sans");
+  for (i=[0:2]) translate([jx[i],ty]) rotate(180) outl(0.2) text(["MIC","IN","OUT"][i],size=th,halign="center",valign="center",font="Liberation Sans:style=Bold");
   translate([(jx[0]+jx[1])/2,YJ+0.2]) rotate(180) sig(1);
   translate([(jx[1]+jx[2])/2,YJ+0.2]) rotate(180) sig(-1);
   translate([jx[0]-5.5,YJ]) rotate(180) mic();
@@ -96,6 +96,9 @@ module part3d() {
   bend3d();
   translate([0,y0,t]) multmatrix([[0,0,1,0],[1,0,0,0],[0,-1,0,0],[0,0,0,1]]) linear_extrude(t) intersection(){ flange_ud(); translate([-1,setb]) square([fl_w+2,fl_len]); }
 }
-if (MODE=="cut") cutflat();
+module part_plate_only() { linear_extrude(t) difference(){ intersection(){ outline(); translate([setb,-20]) square([200,60]); } cutouts(); } bend3d(); }
+if (MODE=="outline") projection(cut=false) part_plate_only();
+else if (MODE=="markout") { projection(cut=false) part_plate_only(); marks(); }
+else if (MODE=="cut") cutflat();
 else if (MODE=="mark") marks();
 else { part3d(); color("red") translate([0,0,t]) linear_extrude(0.05) marks(); }
