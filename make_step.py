@@ -20,10 +20,8 @@ for x in jx: cut=cut.union(cyl(x,YJ,jd))
 pts=[]
 for sx in (-1,1):
     pts.append((dx+sx*(dwt/2),YD-dh/2)); pts.append((dx+sx*(dwb/2),YD+dh/2))
-d=(cq.Workplane("XY").moveTo(dx-dwt/2+dr,YD-dh/2).lineTo(dx+dwt/2-dr,YD-dh/2)
-   .lineTo(dx+dwb/2,YD+dh/2-dr).lineTo(dx+dwb/2-dr,YD+dh/2).lineTo(dx-dwb/2+dr,YD+dh/2)
-   .lineTo(dx-dwb/2,YD+dh/2-dr).close().extrude(t+2).translate((0,0,-1)))
-d=d.edges("|Z").fillet(dr*0.9)
+quad=[(dx-(dwt/2-dr),YD-dh/2+dr),(dx+(dwt/2-dr),YD-dh/2+dr),(dx+(dwb/2-dr),YD+dh/2-dr),(dx-(dwb/2-dr),YD+dh/2-dr)]
+d=cq.Workplane("XY").polyline(quad).close().offset2D(dr,"arc").extrude(t+2).translate((0,0,-1))   # hull of 4 circles, same as bracket.scad
 cut=cut.union(d)
 slot=cq.Workplane("XY").slot2D(sl_len,sl_h,0).extrude(t+2).translate((dx,YD,-1))
 cut=cut.union(slot)
