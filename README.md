@@ -23,6 +23,7 @@ Sheet metal, 1.0 mm. Dimensions were measured from a scan of an original bracket
 
 Notes:
 
+- `marking.dxf` is AutoCAD 2000 (R2000) format. An earlier OpenSCAD-written DXF (R10 header, R14 polylines) was rejected by JLC as unreadable.
 - JLC asks for laser marking text in a double-line font, 0.2 mm line width. The text in `marking.dxf` is drawn as hollow outlines with 0.2 mm lines. I have not confirmed with JLC that they accept it.
 - JLC says the marking drawing should show the part after bending, with the outline and holes. `marking.dxf` is the top view of the folded part. The flange is edge-on, so its markings (none) are not shown.
 - The bend uses a 0.8 mm inner radius. JLC derives the flat pattern from the STEP.
